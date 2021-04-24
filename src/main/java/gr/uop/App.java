@@ -1,5 +1,10 @@
 package gr.uop;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,19 +18,22 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 /**
  * JavaFX App
  */
 public class App extends Application {
-
+    
+    TextField search = new TextField();
+    ListView  list = new ListView<Text>();
+    ListView  list2 = new ListView<Text>();
     @Override
     public void start(Stage stage) {
         
         try 
         {
         VBox  vbox = new VBox();
-        TextField search = new TextField();
-        ListView  list = new ListView<Text>();
+        
         list.setPrefHeight(Integer.MAX_VALUE);
         list.setMaxWidth(200);
         vbox.getChildren().addAll(search,list);
@@ -49,7 +57,6 @@ public class App extends Application {
         buttonsUpDown.getChildren().addAll(buttonUp,buttonDown);
         buttonsUpDown.setAlignment(Pos.CENTER);
         VBox  vbox2 = new VBox();
-        ListView  list2 = new ListView<Text>();
         list2.setPrefHeight(Integer.MAX_VALUE);
         list2.setMaxWidth(200);
         vbox2.getChildren().addAll(list2);
@@ -58,6 +65,15 @@ public class App extends Application {
         vbox2.setPadding(new Insets(50,10,50,10));
         hbox.getChildren().addAll(vbox,buttonsRightLeft,vbox2,buttonsUpDown);
         hbox.setAlignment(Pos.CENTER);
+         
+         for(int i=0 ; i<50 ; i++){
+            list.getItems().add(new Text("Item "+ i));
+                
+         }
+         buttonRight.setOnAction(new MoveToRightList());
+         buttonLeft.setOnAction(new MoveToLeftList());
+         buttonUp.setOnAction(new MoveUpToList());
+         buttonDown.setOnAction(new MoveDownToList());
         var scene = new Scene(hbox, 640, 480);
         stage.setMinHeight(300);
         stage.setMinWidth(300);
@@ -71,7 +87,57 @@ public class App extends Application {
         }
     
     }
-
+    public class MoveToRightList implements EventHandler <ActionEvent>{
+        
+        public void handle(ActionEvent event){
+            int index = list.getSelectionModel().getSelectedIndex();
+            Text text = (Text) list.getSelectionModel().getSelectedItem();
+            list2.getItems().add(text);
+            list.getItems().remove(index);
+            
+        }
+    }
+    public class MoveToLeftList implements EventHandler <ActionEvent>{
+        
+        public void handle(ActionEvent event){
+            int index = list2.getSelectionModel().getSelectedIndex();
+            Text text = (Text) list2.getSelectionModel().getSelectedItem();
+            list.getItems().add(text);
+            list2.getItems().remove(index);
+            
+        }
+    }
+    public class MoveUpToList implements EventHandler <ActionEvent>{
+        
+        public void handle(ActionEvent event){
+            int i = list2.getSelectionModel().getSelectedIndex();
+            if(i>0){
+            
+                Text text = (Text)list2.getItems().get(i);
+                list2.getItems().add(i-1, text);
+                list2.getItems().remove(i+1);  
+            }
+        }
+      
+    }
+    
+    public class MoveDownToList implements EventHandler <ActionEvent>{
+        
+        public void handle(ActionEvent event){
+            int i = list2.getSelectionModel().getSelectedIndex();
+            int count = list2.getItems().size();
+            if( i!=-1 && i < count -1 ){
+            
+                Text text = (Text)list2.getItems().get(i);
+                list2.getItems().remove(i);
+                list2.getItems().add(i+1, text);
+                list2.getSelectionModel().select(i);  
+                
+            }
+        }
+    }
+    
+    
     public static void main(String[] args) {
         launch(args);
     }
