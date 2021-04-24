@@ -1,6 +1,8 @@
 package gr.uop;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import jdk.internal.joptsimple.util.RegexMatcher;
 
 
 /**
@@ -26,6 +29,7 @@ public class App extends Application {
     
     TextField search = new TextField();
     ListView  list = new ListView<Text>();
+    ArrayList<Text>  arrList = new ArrayList<Text>();
     ListView  list2 = new ListView<Text>();
     @Override
     public void start(Stage stage) {
@@ -67,17 +71,26 @@ public class App extends Application {
         hbox.setAlignment(Pos.CENTER);
          
          for(int i=0 ; i<50 ; i++){
-            list.getItems().add(new Text("Item "+ i));
-                
+            arrList.add(new Text("Item "+ i));
          }
+         list.getItems().addAll(arrList);
          buttonRight.setOnAction(new MoveToRightList());
-<<<<<<< HEAD
          buttonLeft.setOnAction(new MoveToLeftList());
          buttonUp.setOnAction(new MoveUpToList());
          buttonDown.setOnAction(new MoveDownToList());
-=======
+         search.setOnAction(new Search());
+         search.setOnKeyTyped(e -> {
+            list.getItems().clear();
+            String text = search.getText();
+            for(Text item : arrList){
+                String text2 = item.getText();
+                boolean flag = Pattern.compile(text).matcher(text2).find();
+                if(flag){
+                    list.getItems().add(new Text(text2));
+                }
+            }
 
->>>>>>> 383848d84d2465a508c5d55eff4bc1f915b46921
+         });
         var scene = new Scene(hbox, 640, 480);
         stage.setMinHeight(300);
         stage.setMinWidth(300);
@@ -101,7 +114,6 @@ public class App extends Application {
             
         }
     }
-<<<<<<< HEAD
     public class MoveToLeftList implements EventHandler <ActionEvent>{
         
         public void handle(ActionEvent event){
@@ -136,16 +148,29 @@ public class App extends Application {
                 Text text = (Text)list2.getItems().get(i);
                 list2.getItems().remove(i);
                 list2.getItems().add(i+1, text);
+                //h parakatw entoli epanaferei to epilegmeno stoixeio stin arxiki epilogi
                 list2.getSelectionModel().select(i);  
                 
             }
         }
     }
     
-    
-=======
-
->>>>>>> 383848d84d2465a508c5d55eff4bc1f915b46921
+    public class Search implements EventHandler <ActionEvent>{
+        
+        public void handle(ActionEvent event){
+            
+            list.getItems().clear();
+            String text = search.getText();
+            for(Text item : arrList){
+                String text2 = item.getText();
+                boolean flag = Pattern.compile(text).matcher(text2).find();
+                if(flag){
+                    list.getItems().add(new Text(text2));
+                }
+            }
+        }
+      
+    }
     public static void main(String[] args) {
         launch(args);
     }
