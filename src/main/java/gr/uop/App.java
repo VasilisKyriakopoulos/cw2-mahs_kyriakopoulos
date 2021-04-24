@@ -71,9 +71,13 @@ public class App extends Application {
                 
          }
          buttonRight.setOnAction(new MoveToRightList());
+<<<<<<< HEAD
          buttonLeft.setOnAction(new MoveToLeftList());
          buttonUp.setOnAction(new MoveUpToList());
          buttonDown.setOnAction(new MoveDownToList());
+=======
+
+>>>>>>> 383848d84d2465a508c5d55eff4bc1f915b46921
         var scene = new Scene(hbox, 640, 480);
         stage.setMinHeight(300);
         stage.setMinWidth(300);
@@ -97,6 +101,7 @@ public class App extends Application {
             
         }
     }
+<<<<<<< HEAD
     public class MoveToLeftList implements EventHandler <ActionEvent>{
         
         public void handle(ActionEvent event){
@@ -138,6 +143,9 @@ public class App extends Application {
     }
     
     
+=======
+
+>>>>>>> 383848d84d2465a508c5d55eff4bc1f915b46921
     public static void main(String[] args) {
         launch(args);
     }
